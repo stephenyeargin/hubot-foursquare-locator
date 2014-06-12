@@ -1,7 +1,7 @@
 {
   "name": "hubot-foursquare-locator",
   "description": "Get last checkin of your bot's friends",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "stephenyeargin",
   "license": "MIT",
 

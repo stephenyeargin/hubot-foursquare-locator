@@ -34,12 +34,16 @@ module.exports = (robot) ->
     clientSecret: process.env.FOURSQUARE_CLIENT_SECRET
     accessToken: process.env.FOURSQUARE_ACCESS_TOKEN
     redirectUrl: "localhost"
+  config.version = '20140401'
 
   foursquare = require('node-foursquare')(config);
 
-  # Set up the brain
-  unless robot.brain.data.foursquare?
-    robot.brain.data.foursquare = []
+  # Default action
+  robot.respond /foursquare$/i, (msg) ->
+    if missingEnvironmentForApi(msg)
+      return
+
+    friendActivity(msg)
 
   # Who are my friends?
   robot.respond /foursquare friends/i, (msg) ->
@@ -54,7 +58,7 @@ module.exports = (robot) ->
         list = []
         for own key, friend of response.friends.items
           user_name = formatName friend
-          list.push user_name
+          list.push "#{user_name} (#{friend.id})"
 
         msg.send list.join(", ")
       else
@@ -72,7 +76,7 @@ module.exports = (robot) ->
       if response.requests.length > 0
 
         for own key, friend of response.requests
-          msg.http("https://api.foursquare.com/v2/users/#{friend.id}/approve?oauth_token=#{config.secrets.accessToken}").post() (err, res, body) ->
+          msg.http("https://api.foursquare.com/v2/users/#{friend.id}/approve?oauth_token=#{config.secrets.accessToken}&v=#{config.version}").post() (err, res, body) ->
             user_name = formatName friend
             msg.send "Approved: #{user_name}"
   
@@ -105,12 +109,12 @@ module.exports = (robot) ->
     if robot.brain.data.foursquare[actor]?
       previous = robot.brain.data.foursquare[actor]
       msg.send "Cannot save #{actor} as #{user_id} because it already set to '#{previous}'."
-      msg.send "Use `foursquare forget #{actor}` to set a new value."
+      msg.send "Use `#{robot.name} foursquare forget #{actor}` to set a new value."
       return;
 
     robot.brain.data.foursquare[actor] = user_id
 
-    msg.send "Ok, I have #{actor} as #{user_id} on foursquare."
+    msg.send "Ok, I have #{actor} as #{user_id} on Foursquare."
 
   # Stop remembering a particular username
   robot.respond /foursquare forget ([a-zA-Z0-9]+)/i, (msg) ->
@@ -121,13 +125,13 @@ module.exports = (robot) ->
     if robot.brain.data.foursquare[actor]?
       previous = robot.brain.data.foursquare[actor]
       delete robot.brain.data.foursquare[actor]
-      msg.send "I no longer know #{actor} as #{previous} on foursquare."
+      msg.send "I no longer know #{actor} as #{previous} on Foursquare."
       return;
 
-    msg.send "I don't know who #{actor} is on foursquare."
+    msg.send "I don't know who #{actor} is on Foursquare."
 
   # Find your friends
-  robot.hear /where[ ']i?s ([a-zA-Z0-9 ]+)(\?)?/i, (msg) ->
+  robot.respond /where[ ']i?s ([a-zA-Z0-9 ]+)(\?)?$/i, (msg) ->
 
     if missingEnvironmentForApi(msg)
       return
@@ -137,12 +141,7 @@ module.exports = (robot) ->
     # You must be bored
     if (searchterm == "everyone" || searchterm == "everybody")
 
-      foursquare.Checkins.getRecentCheckins {limit: 5}, config.secrets.accessToken, (error, response) ->
-
-        for own key, checkin of response.recent
-          user_name = formatName checkin.user
-          timeFormatted = moment(new Date(checkin.createdAt*1000)).fromNow()
-          msg.send "#{user_name} was at #{checkin.venue.name} #{timeFormatted}"
+      friendActivity(msg)
 
     # Check if user id is stored in brain
     else if robot.brain.data.foursquare[searchterm]?
@@ -184,18 +183,26 @@ module.exports = (robot) ->
         if found is 0
           msg.send "Could not find a recent checkin from #{searchterm}."
 
+  # Get all recent checkins
+  friendActivity = (msg) ->
+    foursquare.Checkins.getRecentCheckins {limit: 5}, config.secrets.accessToken, (error, response) ->
+
+      for own key, checkin of response.recent
+        user_name = formatName checkin.user
+        timeFormatted = moment(new Date(checkin.createdAt*1000)).fromNow()
+        msg.send "#{user_name} was at #{checkin.venue.name} #{timeFormatted}"
 
   # Check for required config
   missingEnvironmentForApi = (msg) ->
     missingAnything = false
     unless config.secrets.clientId?
-      msg.send "foursquare API Client ID is missing: Ensure that FOURSQUARE_CLIENT_ID is set."
+      msg.send "Foursquare API Client ID is missing: Ensure that FOURSQUARE_CLIENT_ID is set."
       missingAnything |= true
-    unless config.secrets.clientId?
-      msg.send "foursquare API Client Secret is missing: Ensure that FOURSQUARE_CLIENT_SECRET is set."
+    unless config.secrets.clientSecret?
+      msg.send "Foursquare API Client Secret is missing: Ensure that FOURSQUARE_CLIENT_SECRET is set."
       missingAnything |= true
-    unless config.secrets.clientId?
-      msg.send "foursquare API Access Token is missing: Ensure that FOURSQUARE_ACCESS_TOKEN is set."
+    unless config.secrets.accessToken?
+      msg.send "Foursquare API Access Token is missing: Ensure that FOURSQUARE_ACCESS_TOKEN is set."
       missingAnything |= true
     missingAnything
 
