@@ -19,19 +19,19 @@ describe 'foursquare-locator', ->
     require('../src/foursquare-locator')(@robot)
 
   it 'registers a respond listener', ->
-    expect(@robot.respond).to.have.been.calledWith(/foursquare friends/)
+    expect(@robot.respond).to.have.been.calledWith(/foursquare friends/i)
 
   it 'registers a respond listener', ->
-    expect(@robot.respond).to.have.been.calledWith(/foursquare approve/)
+    expect(@robot.respond).to.have.been.calledWith(/foursquare approve/i)
 
   it 'registers a respond listener', ->
-    expect(@robot.respond).to.have.been.calledWith(/foursquare register/)
+    expect(@robot.respond).to.have.been.calledWith(/foursquare register/i)
 
   it 'registers a respond listener', ->
-    expect(@robot.respond).to.have.been.calledWith(/foursquare ([a-zA-Z0-9]+) as ([0-9]+)/)
+    expect(@robot.respond).to.have.been.calledWith(/foursquare ([a-zA-Z0-9]+) as ([0-9]+)/i)
 
   it 'registers a respond listener', ->
-    expect(@robot.respond).to.have.been.calledWith(/foursquare forget ([a-zA-Z0-9]+)/)
+    expect(@robot.respond).to.have.been.calledWith(/foursquare forget ([a-zA-Z0-9]+)/i)
 
   it 'registers a hear listener', ->
-    expect(@robot.respond).to.have.been.calledWith(/where[ ']i?s ([a-zA-Z0-9 ]+)(\?)?/)
+    expect(@robot.respond).to.have.been.calledWith(/where[ ']i?s ([a-zA-Z0-9 ]+)(\?)?/i)
