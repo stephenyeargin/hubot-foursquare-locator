@@ -34,4 +34,4 @@ describe 'foursquare-locator', ->
     expect(@robot.respond).to.have.been.calledWith(/foursquare forget ([a-zA-Z0-9]+)/i)
 
   it 'registers a hear listener', ->
-    expect(@robot.respond).to.have.been.calledWith(/where[ ']i?s ([a-zA-Z0-9 ]+)(\?)?/i)
+    expect(@robot.respond).to.have.been.calledWith(/where[ ']i?s ([a-zA-Z0-9 ]+)(\?)?$/i)
