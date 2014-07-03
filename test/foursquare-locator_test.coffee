@@ -6,6 +6,12 @@ expect = chai.expect
 
 describe 'foursquare-locator', ->
   beforeEach ->
+
+    # Must be defined so as to avoid throwing errors in lower scripts
+    process.env.FOURSQUARE_CLIENT_ID = 'somedata'
+    process.env.FOURSQUARE_CLIENT_SECRET = 'somedata'
+    process.env.FOURSQUARE_ACCESS_TOKEN = 'somedata'
+
     @robot =
       respond: sinon.spy()
       hear: sinon.spy()
@@ -28,4 +34,4 @@ describe 'foursquare-locator', ->
     expect(@robot.respond).to.have.been.calledWith(/foursquare forget ([a-zA-Z0-9]+)/)
 
   it 'registers a hear listener', ->
-    expect(@robot.hear).to.have.been.calledWith(/where[ ']i?s ([a-zA-Z0-9 ]+)(\?)?/)
+    expect(@robot.respond).to.have.been.calledWith(/where[ ']i?s ([a-zA-Z0-9 ]+)(\?)?/)
