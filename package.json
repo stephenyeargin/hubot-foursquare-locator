@@ -3,7 +3,7 @@
   "description": "Get last checkin of your bot's friends",
   "version": "1.1.1",
   "author": "Stephen Yeargin <stephen@yearg.in>",
-  "homepage": "https://github.com/stephenyeargin/hubot-foursquare-locator",
+  "homepage": "https://github.com/hubot-scripts/hubot-foursquare-locator",
   "license": "MIT",
 
   "keywords": [
@@ -14,11 +14,11 @@
 
   "repository": {
     "type": "git",
-    "url": "git://github.com/stephenyeargin/hubot-foursquare-locator.git"
+    "url": "https://github.com/hubot-scripts/hubot-foursquare-locator"
   },
 
   "bugs": {
-    "url": "https://github.com/stephenyeargin/hubot-foursquare-locator/issues"
+    "url": "https://github.com/hubot-scripts/hubot-foursquare-locator/issues"
   },
 
   "dependencies": {
