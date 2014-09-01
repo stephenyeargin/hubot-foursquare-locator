@@ -39,14 +39,14 @@ module.exports = (robot) ->
   foursquare = require('node-foursquare')(config);
 
   # Default action
-  robot.respond /foursquare$/i, (msg) ->
+  robot.respond /(foursquare|swarm)$/i, (msg) ->
     if missingEnvironmentForApi(msg)
       return
 
     friendActivity(msg)
 
   # Who are my friends?
-  robot.respond /foursquare friends/i, (msg) ->
+  robot.respond /(foursquare|swarm) friends/i, (msg) ->
 
     if missingEnvironmentForApi(msg)
       return
@@ -65,7 +65,7 @@ module.exports = (robot) ->
         msg.send "Your bot has no friends. :("
 
   # Approve pending bot friend requests
-  robot.respond /foursquare approve/i, (msg) ->
+  robot.respond /(foursquare|swarm) approve/i, (msg) ->
 
     if missingEnvironmentForApi(msg)
       return
@@ -85,7 +85,7 @@ module.exports = (robot) ->
         msg.send "No friend requests to approve."
 
   # Tell people how to friend the bot
-  robot.respond /foursquare register/i, (msg) ->
+  robot.respond /(foursquare|swarm) register/i, (msg) ->
 
     if missingEnvironmentForApi(msg)
       return
@@ -97,7 +97,7 @@ module.exports = (robot) ->
       msg.send response.user.bio if response.user.bio?
 
   # Identify your username with the bot
-  robot.respond /foursquare ([a-zA-Z0-9]+) as ([0-9]+)/i, (msg) ->
+  robot.respond /(foursquare|swarm) ([a-zA-Z0-9]+) as ([0-9]+)/i, (msg) ->
     if msg.match[1] is 'me'
       actor = msg.message.user.name
     else
@@ -117,7 +117,7 @@ module.exports = (robot) ->
     msg.send "Ok, I have #{actor} as #{user_id} on Foursquare."
 
   # Stop remembering a particular username
-  robot.respond /foursquare forget ([a-zA-Z0-9]+)/i, (msg) ->
+  robot.respond /(foursquare|swarm) forget ([a-zA-Z0-9]+)/i, (msg) ->
 
     actor = msg.match[1].trim()
 

@@ -4,17 +4,39 @@ Get last checkin of your bot's friends
 
 [![Build Status](https://travis-ci.org/stephenyeargin/hubot-foursquare-locator.png)](https://travis-ci.org/stephenyeargin/hubot-foursquare-locator)
 
-## How To Setup
+## How to Set Up the Bot User
 
 1. Register a Foursquare application to obtain your `FOURSQUARE_CLIENT_ID` and `FOURSQUARE_CLIENT_SECRET`
 2. Authenticate either your personal foursquare account or a purpose-specific user that acts as your bot
-3. Manually walk through the OAuth process to obtain a `FOURSQUARE_ACCESS_TOKEN`
+3. Manually walk through the OAuth process to obtain a `FOURSQUARE_ACCESS_TOKEN` (this can be tricky)
+
+When you have all three values, load them as environment variables for launching your Hubot. If you are installing via Heroku, you would enter:
+
+```
+$ heroku set:config FOURSQUARE_CLIENT_ID=yourclientid
+$ heroku set:config FOURSQUARE_CLIENT_SECRET=yourclientsecret
+$ heroku set:config FOURSQUARE_ACCESS_TOKEN=youraccesstoken
+```
+
+If you are using some other hosting/launcher, make sure the variables above are loaded in appropriately.
+
+## Adding Module to Your Hubot
+
+1. Open the `external-scripts.json` file in the root directory (you may need to create this file)
+2. The entry should look like `[ 'hubot-foursquare-locator' ]`
+3. Run `npm install` to load in modules
+2. Run `bin/hubot` to test (you will need the environment variables listed above to be set)
 
 ## Usage
 
+### Get All Recent Checkins
+
+* `hubot foursquare`
+* A list of all recent checkins appears
+
 ### Find Last Checkins
 
-* `where is bob?`
+* `hubot where is bob?`
 * Bob's last checkin (if a friend) appears
 * If there is more than one Bob in your friend list, you will see all of them
 
