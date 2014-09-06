@@ -161,7 +161,7 @@ module.exports = (robot) ->
           msg.send "#{user_name} is nowhere to be found."
 
         timeFormatted = moment(new Date(checkin.createdAt*1000)).fromNow()
-        msg.send "#{user_name} was at #{checkin.venue.name} #{timeFormatted}"
+        msg.send "#{user_name} was at #{checkin.venue.name}, #{checkin.venue.location.city}, #{checkin.venue.location.state} #{timeFormatted}"
 
     else
       # Nothing stored. Do simple looping instead
@@ -176,7 +176,7 @@ module.exports = (robot) ->
           user_name_match = user_name.toLowerCase()
           if ~user_name_match.indexOf searchterm
             timeFormatted = moment(new Date(checkin.createdAt*1000)).fromNow()
-            msg.send "#{user_name} was at #{checkin.venue.name} #{timeFormatted}"
+            msg.send "#{user_name} was at #{checkin.venue.name}, #{checkin.venue.location.city}, #{checkin.venue.location.state} #{timeFormatted}"
             found++
 
         # If loop failed to come up with a result, tell them
@@ -190,7 +190,7 @@ module.exports = (robot) ->
       for own key, checkin of response.recent
         user_name = formatName checkin.user
         timeFormatted = moment(new Date(checkin.createdAt*1000)).fromNow()
-        msg.send "#{user_name} was at #{checkin.venue.name} #{timeFormatted}"
+        msg.send "#{user_name} was at #{checkin.venue.name}, #{checkin.venue.location.city}, #{checkin.venue.location.state} #{timeFormatted}"
 
   # Check for required config
   missingEnvironmentForApi = (msg) ->
