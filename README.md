@@ -22,10 +22,12 @@ If you are using some other hosting/launcher, make sure the variables above are 
 
 ## Adding Module to Your Hubot
 
-1. Open the `external-scripts.json` file in the root directory (you may need to create this file)
-2. The entry should look like `[ 'hubot-foursquare-locator' ]`
-3. Run `npm install` to load in modules
-2. Run `bin/hubot` to test (you will need the environment variables listed above to be set)
+Official instructions [here](https://github.com/github/hubot/blob/master/docs/scripting.md#npm-packages).
+
+1. Open the `external-scripts.json` file in the root directory (you may need to create this file) and add an entry to the array (e.g. `[ 'hubot-foursquare-locator' ]`).
+2. Add an entry for the module to your `packages.json` file (e.g. `"hubot-foursquare-locator": "1.1.4"`).
+3. Run `npm install` to load in modules.
+4. Run `bin/hubot` to test (you will need the environment variables listed above to be set).
 
 ## Usage
 
