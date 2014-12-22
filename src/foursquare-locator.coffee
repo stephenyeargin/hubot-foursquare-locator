@@ -16,7 +16,7 @@
 #   hubot foursquare register - Tells how to friend the bot
 #   hubot foursquare <user> as <user id> - Hints for the bot to locate a user
 #   hubot foursquare forget <user> - Removes an existing hint to locate a user
-#   where is <user>? - Filters recent checkins to a particular subset of users
+#   hubot where is <user>? - Filters recent checkins to a particular subset of users
 #
 # Notes:
 #   To obtain/set the FOURSQUARE_ACCESS_TOKEN, you will need to go through the OAuth handshake manually with your bot's credentials
