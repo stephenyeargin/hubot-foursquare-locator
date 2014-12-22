@@ -36,6 +36,8 @@ module.exports = (robot) ->
     redirectUrl: "localhost"
   config.version = '20140401'
 
+  robot.brain.data.foursquare or= {}
+
   foursquare = require('node-foursquare')(config);
 
   # Default action
