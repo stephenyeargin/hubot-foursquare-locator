@@ -15,6 +15,8 @@ describe 'foursquare-locator', ->
     @robot =
       respond: sinon.spy()
       hear: sinon.spy()
+      brain:
+        data: {}
 
     require('../src/foursquare-locator')(@robot)
 
