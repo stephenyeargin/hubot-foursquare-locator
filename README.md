@@ -2,7 +2,7 @@
 
 Get last checkin of your bot's friends
 
-[![Build Status](https://travis-ci.org/stephenyeargin/hubot-foursquare-locator.png)](https://travis-ci.org/stephenyeargin/hubot-foursquare-locator)
+[![Build Status](https://travis-ci.org/hubot-scripts/hubot-foursquare-locator.png)](https://travis-ci.org/hubot-scripts/hubot-foursquare-locator)
 
 ## How to Set Up the Bot User
 
@@ -22,18 +22,17 @@ If you are using some other hosting/launcher, make sure the variables above are 
 
 ## Adding Module to Your Hubot
 
-Official instructions [here](https://github.com/github/hubot/blob/master/docs/scripting.md#npm-packages).
+See full instructions [here](https://github.com/github/hubot/blob/master/docs/scripting.md#npm-packages).
 
-1. Open the `external-scripts.json` file in the root directory (you may need to create this file) and add an entry to the array (e.g. `[ 'hubot-foursquare-locator' ]`).
-2. Add an entry for the module to your `packages.json` file (e.g. `"hubot-foursquare-locator": "1.1.4"`).
-3. Run `npm install` to load in modules.
-4. Run `bin/hubot` to test (you will need the environment variables listed above to be set).
+1. `npm install hubot-foursquare-locator --save` (updates your `package.json` file)
+2. Open the `external-scripts.json` file in the root directory (you may need to create this file) and add an entry to the array (e.g. `[ 'hubot-foursquare-locator' ]`).
 
 ## Usage
 
 ### Get All Recent Checkins
 
 * `hubot foursquare`
+* `hubot where is everyone?`
 * A list of all recent checkins appears
 
 ### Find Last Checkins
@@ -42,7 +41,7 @@ Official instructions [here](https://github.com/github/hubot/blob/master/docs/sc
 * Bob's last checkin (if a friend) appears
 * If there is more than one Bob in your friend list, you will see all of them
 
-### Map Usernames to Foursquare Users
+### Map Usernames to Foursquare User IDs
 
 * Look up your foursquare numeric ID
 * `hubot foursquare me as 12345`
