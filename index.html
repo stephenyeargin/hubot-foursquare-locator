@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Hubot Foursquare Locator : Get last checkin of your bot&#39;s friends">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Hubot Foursquare Locator</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/hubot-scripts/hubot-foursquare-locator">View on GitHub</a>
+
+          <h1 id="project_title">Hubot Foursquare Locator</h1>
+          <h2 id="project_tagline">Get last checkin of your bot&#39;s friends</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/hubot-scripts/hubot-foursquare-locator/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/hubot-scripts/hubot-foursquare-locator/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h2>
+<a id="how-to-set-up-the-bot-user" class="anchor" href="#how-to-set-up-the-bot-user" aria-hidden="true"><span class="octicon octicon-link"></span></a>How to Set Up the Bot User</h2>
+
+<ol>
+<li>Register a Foursquare application to obtain your <code>FOURSQUARE_CLIENT_ID</code> and <code>FOURSQUARE_CLIENT_SECRET</code>
+</li>
+<li>Authenticate either your personal foursquare account or a purpose-specific user that acts as your bot</li>
+<li>Manually walk through the OAuth process to obtain a <code>FOURSQUARE_ACCESS_TOKEN</code> (this can be tricky)</li>
+</ol>
+
+<p>When you have all three values, load them as environment variables for launching your Hubot. If you are installing via Heroku, you would enter:</p>
+
+<pre><code>$ heroku set:config FOURSQUARE_CLIENT_ID=yourclientid
+$ heroku set:config FOURSQUARE_CLIENT_SECRET=yourclientsecret
+$ heroku set:config FOURSQUARE_ACCESS_TOKEN=youraccesstoken
+</code></pre>
+
+<p>If you are using some other hosting/launcher, make sure the variables above are loaded in appropriately.</p>
+
+<h2>
+<a id="adding-module-to-your-hubot" class="anchor" href="#adding-module-to-your-hubot" aria-hidden="true"><span class="octicon octicon-link"></span></a>Adding Module to Your Hubot</h2>
+
+<p>See full instructions <a href="https://github.com/github/hubot/blob/master/docs/scripting.md#npm-packages">here</a>.</p>
+
+<ol>
+<li>
+<code>npm install hubot-foursquare-locator --save</code> (updates your <code>package.json</code> file)</li>
+<li>Open the <code>external-scripts.json</code> file in the root directory (you may need to create this file) and add an entry to the array (e.g. <code>[ 'hubot-foursquare-locator' ]</code>).</li>
+</ol>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<h3>
+<a id="get-all-recent-checkins" class="anchor" href="#get-all-recent-checkins" aria-hidden="true"><span class="octicon octicon-link"></span></a>Get All Recent Checkins</h3>
+
+<ul>
+<li><code>hubot foursquare</code></li>
+<li><code>hubot where is everyone?</code></li>
+<li>A list of all recent checkins appears</li>
+</ul>
+
+<h3>
+<a id="find-last-checkins" class="anchor" href="#find-last-checkins" aria-hidden="true"><span class="octicon octicon-link"></span></a>Find Last Checkins</h3>
+
+<ul>
+<li><code>hubot where is bob?</code></li>
+<li>Bob's last checkin (if a friend) appears</li>
+<li>If there is more than one Bob in your friend list, you will see all of them</li>
+</ul>
+
+<h3>
+<a id="map-usernames-to-foursquare-user-ids" class="anchor" href="#map-usernames-to-foursquare-user-ids" aria-hidden="true"><span class="octicon octicon-link"></span></a>Map Usernames to Foursquare User IDs</h3>
+
+<ul>
+<li>Look up your foursquare numeric ID</li>
+<li><code>hubot foursquare me as 12345</code></li>
+<li>Your screen name is now mapped to a numeric ID so that <code>where is myusername?</code> works as well.</li>
+<li>This works for mapping other room users as well (<code>hubot foursquare otherusername as 98765</code>)</li>
+</ul>
+
+<h3>
+<a id="approve-new-friends" class="anchor" href="#approve-new-friends" aria-hidden="true"><span class="octicon octicon-link"></span></a>Approve New Friends</h3>
+
+<ul>
+<li>Users add the bot as a friend</li>
+<li><code>hubot foursquare approve</code></li>
+<li>All pending friend requests are approved</li>
+</ul>
+
+<h3>
+<a id="list-friends" class="anchor" href="#list-friends" aria-hidden="true"><span class="octicon octicon-link"></span></a>List Friends</h3>
+
+<ul>
+<li><code>hubot foursquare friends</code></li>
+<li>See a list of authenticated bot's friends</li>
+</ul>
+
+<h3>
+<a id="get-registration-information" class="anchor" href="#get-registration-information" aria-hidden="true"><span class="octicon octicon-link"></span></a>Get Registration Information</h3>
+
+<ul>
+<li><code>hubot foursquare register</code></li>
+<li>Identifies the account that other users should add as a friend</li>
+</ul>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Hubot Foursquare Locator maintained by <a href="https://github.com/hubot-scripts">hubot-scripts</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
