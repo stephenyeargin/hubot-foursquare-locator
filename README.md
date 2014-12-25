@@ -1,8 +1,6 @@
-# Hubot Foursquare Locator
+# Hubot Foursquare Locator [![npm version](https://badge.fury.io/js/hubot-foursquare-locator.svg)](http://badge.fury.io/js/hubot-foursquare-locator) [![Build Status](https://travis-ci.org/hubot-scripts/hubot-foursquare-locator.png)](https://travis-ci.org/hubot-scripts/hubot-foursquare-locator)
 
 Get last checkin of your bot's friends
-
-[![Build Status](https://travis-ci.org/hubot-scripts/hubot-foursquare-locator.png)](https://travis-ci.org/hubot-scripts/hubot-foursquare-locator)
 
 ## How to Set Up the Bot User
 
