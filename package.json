@@ -8,7 +8,9 @@
   "keywords": [
     "hubot",
     "hubot-scripts",
-    "foursquare"
+    "foursquare",
+    "swarm",
+    "checkins"
   ],
   "repository": {
     "type": "git",
