@@ -104,7 +104,8 @@ module.exports = (robot) ->
       profile_url = "https://foursquare.com/user/#{response.user.id}"
       user_name = formatName response.user
       contact = response.user.contact.email || response.user.contact.phone
-      msg.send "1) Search for #{user_name} <#{contact}> in the Swarm application and send a friend request.\n2) Type `#{robot.name} foursquare approve`"
+      msg.send "1) Search for #{user_name} <#{contact}> in the Swarm application and send a friend request."
+      msg.send "2) Type `#{robot.name} foursquare approve`"
       msg.send response.user.bio if response.user.bio?
 
   # Identify your username with the bot
