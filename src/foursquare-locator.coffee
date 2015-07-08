@@ -31,7 +31,6 @@ Util = require "util"
 moment = require "moment"
 
 module.exports = (robot) ->
-
   config = secrets:
     clientId: process.env.FOURSQUARE_CLIENT_ID
     clientSecret: process.env.FOURSQUARE_CLIENT_SECRET
@@ -44,20 +43,18 @@ module.exports = (robot) ->
   foursquare = require('node-foursquare')(config);
 
   # Default action
-  robot.respond /(foursquare|4sq|swarm)$/i, (msg) ->
+  robot.respond /(?:foursquare|4sq|swarm)$/i, (msg) ->
     if missingEnvironmentForApi(msg)
       return
 
     friendActivity(msg)
 
   # Who are my friends?
-  robot.respond /(foursquare|4sq|swarm) friends/i, (msg) ->
-
+  robot.respond /(?:foursquare|4sq|swarm) friends/i, (msg) ->
     if missingEnvironmentForApi(msg)
       return
 
     foursquare.Users.getFriends 'self', {}, config.secrets.accessToken, (error, response) ->
-
       # Loop through friends
       if response.friends.items.length > 0
         list = []
@@ -65,24 +62,33 @@ module.exports = (robot) ->
           user_name = formatName friend
           list.push "#{user_name} (#{friend.id})"
 
-        msg.send list.join(", ")
+        # List needs to be chunked for some adapters
+        chunked_list = arrayChunk(list, 10)
+        robot.logger.debug chunked_list
+
+        # Send each chunk along
+        for chunk in chunked_list
+          msg.send chunk.join(", ")
+
       else
         msg.send "Your bot has no friends. :("
 
   # Approve pending bot friend requests
-  robot.respond /(foursquare|4sq|swarm) approve/i, (msg) ->
-
+  robot.respond /(?:foursquare|4sq|swarm) approve/i, (msg) ->
     if missingEnvironmentForApi(msg)
       return
 
     foursquare.Users.getRequests config.secrets.accessToken, (error, response) ->
-
       # Loop through requests
       if response.requests.length > 0
-
         for own key, friend of response.requests
           msg.http("https://api.foursquare.com/v2/users/#{friend.id}/approve?oauth_token=#{config.secrets.accessToken}&v=#{config.version}").post() (err, res, body) ->
             user_name = formatName friend
+            if err || res.statusCode != 200
+              robot.logger.debug err
+              robot.logger.debug res.statusCode
+              robot.logger.debug body
+              return msg.send "Sorry, couldn't approve #{user_name} right now. [#{res.statusCode}]"
             msg.send "Approved: #{user_name}"
   
       # Your bot is lonely
@@ -90,8 +96,7 @@ module.exports = (robot) ->
         msg.send "No friend requests to approve."
 
   # Tell people how to friend the bot
-  robot.respond /(foursquare|4sq|swarm) register/i, (msg) ->
-
+  robot.respond /(?:foursquare|4sq|swarm) register/i, (msg) ->
     if missingEnvironmentForApi(msg)
       return
 
@@ -103,7 +108,7 @@ module.exports = (robot) ->
       msg.send response.user.bio if response.user.bio?
 
   # Identify your username with the bot
-  robot.respond /(foursquare|4sq|swarm) ([a-zA-Z0-9]+) as ([0-9]+)/i, (msg) ->
+  robot.respond /(?:foursquare|4sq|swarm) ([a-zA-Z0-9]+) as ([0-9]+)/i, (msg) ->
     if msg.match[1] is 'me'
       actor = msg.message.user.name
     else
@@ -123,8 +128,7 @@ module.exports = (robot) ->
     msg.send "Ok, I have #{actor} as #{user_id} on Foursquare."
 
   # Stop remembering a particular username
-  robot.respond /(foursquare|4sq|swarm) forget ([a-zA-Z0-9]+)/i, (msg) ->
-
+  robot.respond /(?:foursquare|4sq|swarm) forget ([a-zA-Z0-9]+)/i, (msg) ->
     actor = msg.match[1].trim()
 
     # Remove from brain if set
@@ -138,20 +142,18 @@ module.exports = (robot) ->
 
   # Find your friends
   robot.respond /where[ ']i?s ([a-zA-Z0-9 ]+)(\?)?$/i, (msg) ->
-
     if missingEnvironmentForApi(msg)
       return
 
     searchterm = msg.match[1].toLowerCase()
+    robot.logger.debug robot.brain.data.foursquare[searchterm]
 
     # You must be bored
     if (searchterm == "everyone" || searchterm == "everybody")
-
       friendActivity(msg)
 
     # Check if user id is stored in brain
     else if robot.brain.data.foursquare[searchterm]?
-
       user_id = robot.brain.data.foursquare[searchterm]
 
       foursquare.Users.getUser user_id, config.secrets.accessToken, (error, response) ->
@@ -188,6 +190,13 @@ module.exports = (robot) ->
         # If loop failed to come up with a result, tell them
         if found is 0
           msg.send "Could not find a recent checkin from #{searchterm}."
+
+
+  # Chunk an array
+  arrayChunk = (array, chunkSize) ->
+    [].concat.apply [], array.map((elem, i) ->
+      (if i % chunkSize then [] else [array.slice(i, i + chunkSize)])
+    )
 
   # Get all recent checkins
   friendActivity = (msg) ->
