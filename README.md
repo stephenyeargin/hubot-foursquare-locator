@@ -1,4 +1,4 @@
-# Hubot Foursquare / Swarm Locator [![npm version](https://badge.fury.io/js/hubot-foursquare-locator.svg)](http://badge.fury.io/js/hubot-foursquare-locator) [![Build Status](https://travis-ci.org/hubot-scripts/hubot-foursquare-locator.png)](https://travis-ci.org/hubot-scripts/hubot-foursquare-locator)
+# Hubot Foursquare / Swarm Locator [![npm version](https://badge.fury.io/js/hubot-foursquare-locator.svg)](http://badge.fury.io/js/hubot-foursquare-locator) [![Build Status](https://travis-ci.org/stephenyeargin/hubot-foursquare-locator.png)](https://travis-ci.org/hubot-scripts/hubot-foursquare-locator)
 
 Get last checkin of your bot's friends
 
