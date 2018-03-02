@@ -1,39 +1,57 @@
+Helper = require('hubot-test-helper')
 chai = require 'chai'
-sinon = require 'sinon'
-chai.use require 'sinon-chai'
+nock = require 'nock'
 
 expect = chai.expect
 
-describe 'foursquare-locator', ->
+helper = new Helper('../src/foursquare-locator.coffee')
+
+describe 'hubot-foursquare-locator', ->
   beforeEach ->
+    process.env.HUBOT_LOG_LEVEL = 'error'
+    nock.disableNetConnect()
 
-    # Must be defined so as to avoid throwing errors in lower scripts
-    process.env.FOURSQUARE_CLIENT_ID = 'somedata'
-    process.env.FOURSQUARE_CLIENT_SECRET = 'somedata'
-    process.env.FOURSQUARE_ACCESS_TOKEN = 'somedata'
+    nock('https://api.foursquare.com')
+      .get('/v2/checkins/recent')
+      .replyWithFile(200, __dirname + '/fixtures/checkins-recent.json')
+    nock('https://api.foursquare.com')
+      .get('/v2/users/self/friends')
+      .replyWithFile(200, __dirname + '/fixtures/users-self-friends.json')
 
-    @robot =
-      respond: sinon.spy()
-      hear: sinon.spy()
-      brain:
-        data: {}
+  afterEach ->
+    nock.cleanAll()
 
-    require('../src/foursquare-locator')(@robot)
+  context 'foursquare locator tests', ->
+    beforeEach ->
+      process.env.FOURSQUARE_CLIENT_ID = 'abcefghijk'
+      process.env.FOURSQUARE_CLIENT_SECRET = '123abc456efg'
+      process.env.FOURSQUARE_ACCESS_TOKEN = 'abcefghijk123abc456efg'
+      @room = helper.createRoom()
 
-  it 'registers a respond listener for friends', ->
-    expect(@robot.respond).to.have.been.calledWith(/(?:foursquare|4sq|swarm) friends/i)
+    afterEach ->
+      @room.destroy()
+      delete process.env.FOURSQUARE_CLIENT_ID
+      delete process.env.FOURSQUARE_CLIENT_SECRET
+      delete process.env.FOURSQUARE_ACCESS_TOKEN
 
-  it 'registers a respond listener for approve', ->
-    expect(@robot.respond).to.have.been.calledWith(/(?:foursquare|4sq|swarm) approve/i)
+    # hubot swarm friends
+    it 'returns a list of recent checkins from friends', (done) ->
+      selfRoom = @room
+      selfRoom.user.say('alice', '@hubot swarm friends')
 
-  it 'registers a respond listener for register', ->
-    expect(@robot.respond).to.have.been.calledWith(/(?:foursquare|4sq|swarm) register/i)
+      setTimeout(() ->
+        try
+          expect(selfRoom.messages).to.eql [
+            ['alice', '@hubot swarm friends']
+          ]
+          done()
+        catch err
+          done err
+        return
+      , 1000)
 
-  it 'registers a respond listener for mapping user as ID', ->
-    expect(@robot.respond).to.have.been.calledWith(/(?:foursquare|4sq|swarm) ([a-zA-Z0-9]+) as ([0-9]+)/i)
-
-  it 'registers a respond listener for forgetting a user', ->
-    expect(@robot.respond).to.have.been.calledWith(/(?:foursquare|4sq|swarm) forget ([a-zA-Z0-9]+)/i)
-
-  it 'registers a hear listener', ->
-    expect(@robot.respond).to.have.been.calledWith(/where[ ']i?s ([a-zA-Z0-9 ]+)(\?)?$/i)
+    # hubot swarm approve
+    # hubot swarm register
+    # hubot swarm <user> as <id>
+    # hubot swarm forget <user>
+    # hubot where is <user>?

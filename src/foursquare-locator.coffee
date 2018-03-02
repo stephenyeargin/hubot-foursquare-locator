@@ -36,7 +36,7 @@ module.exports = (robot) ->
     clientSecret: process.env.FOURSQUARE_CLIENT_SECRET
     accessToken: process.env.FOURSQUARE_ACCESS_TOKEN
     redirectUrl: "localhost"
-  config.version = '20140401'
+  config.version = '20180302'
 
   robot.brain.data.foursquare or= {}
 
@@ -90,7 +90,7 @@ module.exports = (robot) ->
               robot.logger.debug body
               return msg.send "Sorry, couldn't approve #{user_name} right now. [#{res.statusCode}]"
             msg.send "Approved: #{user_name}"
-  
+
       # Your bot is lonely
       else
         msg.send "No friend requests to approve."
