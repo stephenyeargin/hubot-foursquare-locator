@@ -36,7 +36,9 @@ module.exports = (robot) ->
     clientSecret: process.env.FOURSQUARE_CLIENT_SECRET
     accessToken: process.env.FOURSQUARE_ACCESS_TOKEN
     redirectUrl: "localhost"
-  config.version = '20180302'
+  config.foursquare =
+    mode: 'foursquare',
+    version: '20140806'
   config.winston =
     loggers:
       core:
