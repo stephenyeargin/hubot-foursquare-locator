@@ -37,6 +37,11 @@ module.exports = (robot) ->
     accessToken: process.env.FOURSQUARE_ACCESS_TOKEN
     redirectUrl: "localhost"
   config.version = '20180302'
+  config.winston =
+    loggers:
+      core:
+        'console':
+          level: process.env.HUBOT_LOG_LEVEL
 
   robot.brain.data.foursquare or= {}
 
@@ -55,6 +60,10 @@ module.exports = (robot) ->
       return
 
     foursquare.Users.getFriends 'self', {}, config.secrets.accessToken, (error, response) ->
+      if error?
+        handleError error, msg
+        return
+
       # Loop through friends
       if response.friends.items.length > 0
         list = []
@@ -79,6 +88,10 @@ module.exports = (robot) ->
       return
 
     foursquare.Users.getRequests config.secrets.accessToken, (error, response) ->
+      if error?
+        handleError error, msg
+        return
+
       # Loop through requests
       if response.requests.length > 0
         for own key, friend of response.requests
@@ -101,6 +114,10 @@ module.exports = (robot) ->
       return
 
     foursquare.Users.getUser 'self', config.secrets.accessToken, (error, response) ->
+      if error?
+        handleError error, msg
+        return
+
       profile_url = "https://foursquare.com/user/#{response.user.id}"
       user_name = formatName response.user
       contact = response.user.contact.email || response.user.contact.phone
@@ -158,9 +175,8 @@ module.exports = (robot) ->
       user_id = robot.brain.data.foursquare[searchterm]
 
       foursquare.Users.getUser user_id, config.secrets.accessToken, (error, response) ->
-
         if error?
-          msg.send error
+          handleError error, msg
           return
 
         user_name = formatName response.user
@@ -175,6 +191,9 @@ module.exports = (robot) ->
     else
       # Nothing stored. Do simple looping instead
       foursquare.Checkins.getRecentCheckins {limit: 100}, config.secrets.accessToken, (error, response) ->
+        if error?
+          handleError error, msg
+          return
 
         # Loop through friends
         found = 0
@@ -202,6 +221,9 @@ module.exports = (robot) ->
   # Get all recent checkins
   friendActivity = (msg) ->
     foursquare.Checkins.getRecentCheckins {limit: 5}, config.secrets.accessToken, (error, response) ->
+      if error?
+        handleError error, msg
+        return
 
       for own key, checkin of response.recent
         user_name = formatName checkin.user
@@ -230,3 +252,7 @@ module.exports = (robot) ->
       return user.firstName
     else
       return "(No Name)"
+
+  handleError = (error, msg) ->
+    robot.logger.error error
+    msg.send error
