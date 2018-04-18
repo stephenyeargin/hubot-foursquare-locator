@@ -3,7 +3,7 @@
   "description": "Get last checkin of your bot's friends",
   "version": "1.3.1",
   "author": "Stephen Yeargin <stephen@yearg.in>",
-  "homepage": "https://github.com/hubot-scripts/hubot-foursquare-locator",
+  "homepage": "https://github.com/stephenyeargin/hubot-foursquare-locator",
   "license": "MIT",
   "keywords": [
     "hubot",
@@ -14,16 +14,16 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/hubot-scripts/hubot-foursquare-locator"
+    "url": "https://github.com/stephenyeargin/hubot-foursquare-locator"
   },
   "bugs": {
-    "url": "https://github.com/hubot-scripts/hubot-foursquare-locator/issues"
+    "url": "https://github.com/stephenyeargin/hubot-foursquare-locator/issues"
   },
   "peerDependencies": {
-    "hubot": ">=2"
+    "hubot": ">=2 <10 || 0.0.0-development"
   },
   "dependencies": {
-    "moment": "~2.21.0",
+    "moment": "~2.22.1",
     "node-foursquare": "0.3.2"
   },
   "devDependencies": {
@@ -34,12 +34,12 @@
     "grunt-contrib-watch": "~1.0.0",
     "grunt-mocha-test": "~0.13.3",
     "grunt-release": "~0.14.0",
-    "hubot-test-helper": "^1.8.1",
+    "hubot-test-helper": "^1.9.0",
     "husky": "^0.14.3",
     "matchdep": "~2.0.0",
-    "mocha": "^5.0.3",
-    "nock": "^9.2.3",
-    "sinon": "^4.4.2",
+    "mocha": "^5.1.0",
+    "nock": "^9.2.5",
+    "sinon": "^4.5.0",
     "sinon-chai": "^3.0.0"
   },
   "main": "index.coffee",
