@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "moment": "^2.22.2",
-    "node-foursquare": "0.3.3",
+    "node-foursquare": "0.4.6",
     "request": "^2.88.0"
   },
   "devDependencies": {
