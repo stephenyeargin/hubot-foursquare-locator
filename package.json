@@ -20,7 +20,7 @@
     "url": "https://github.com/stephenyeargin/hubot-foursquare-locator/issues"
   },
   "peerDependencies": {
-    "hubot": "^3"
+    "hubot": "^3 || ^4"
   },
   "dependencies": {
     "moment": "^2.29.4",
