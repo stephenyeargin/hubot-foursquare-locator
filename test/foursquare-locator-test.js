@@ -3,7 +3,7 @@ const {
 } = require('node:test');
 const assert = require('node:assert/strict');
 const path = require('path');
-const nock = require('nock');
+const nock = require('nock').default;
 const { createTestBot } = require('./common/TestBot');
 
 const FIXTURES = path.resolve(__dirname, 'fixtures');
