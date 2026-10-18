@@ -1,6 +1,6 @@
 const path = require('path');
 const { Robot, TextMessage } = require('hubot');
-const nock = require('nock');
+const nock = require('nock').default;
 const script = require('../../src/foursquare-locator');
 
 class TestBotContext {
